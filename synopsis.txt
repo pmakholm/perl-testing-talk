@@ -1,0 +1,14 @@
+Queue::Timed
+============
+
+  my $queue = Queue::Timed->new() # constructor
+  $queue->enqueue($obj)           # add $obj to queue
+  $obj = $queue->dequeue()        # get object form queue
+ 
+  $queue->length                  # Get length of queue
+  $queue->empty                   # is the queue empty
+
+  $queue->wait_time               # The time the front object
+                                  # has been waiting
+
+

@@ -1,0 +1,115 @@
+Does your code work correctly? (outline)
+========================================
+
+The Case Story
+-------------- 
+
+Queue::Timed
+
+  my $queue = Queue::Timed->new() # constructor
+  $queue->enqueue($obj)           # add $obj to queue
+  $obj = $queue->dequeue()        # get object form queue
+ 
+  $queue->length                  # Get length of queue
+  $queue->empty                   # is the queue empty
+
+  $queue->wait_time               # The time the front object has been waiting
+
+
+What is TAP
+-----------
+
+Simple protocol for writing test output.
+
+  #!/usr/bin/perl
+
+  use Queue::Timed;
+  my $queue = Queue::Timed->new;
+  
+  print "1..3\n";
+  print defined($queue)            ? "ok 1\n" : "not ok 1\n";
+  print $queue->isa("Queue::Timed")? "ok 2\n" : "not ok 2\n";
+  print $queue->length == 0        ? "ok 3\n" : "not ok 3\n";
+
+
+prove(1) run tests and parses the TAP output.
+
+Test::More
+----------
+
+Or the same test using Test::More
+
+  #!/usr/bin/perl
+   
+  use Test::More plan => 3;
+
+  use Queue::Timed;
+  my $queue = Queue::Timed->new();
+
+  ok( defined($queue),            "new() returns defined value"); 
+  isa_ok( $queue, "Queue::Timed", "... of the right type");
+  is( $queue->length, 0,          "... with length 0");
+
+
+Comparing data structures
+-------------------------
+
+Let us look at a more complex issue - t/03-datastructures.t
+
+Hey, look at the failure... Well I don't dare to fix it on stage. Mark it as
+todo... 
+
+    TODO: {
+        local $TODO = "reason";
+
+        ...;
+    }
+
+Test cases to be skipped for some reason can be handled almost the same
+way:
+
+    SKIP: {
+        skip "reason", 4 if $skip_these;
+
+        ...;
+    } 
+
+For a much more complete testing of deep datastructures see Test::Deep;
+
+Testing external dependencies
+-----------------------------
+
+How do we test wait_time()?
+
+The naïve way is to use sleep() - t/04-wait_time-sleep.t
+
+A better way is to override the time() function - t/05-wait_time-overwrite.t
+
+Using Time::HiRes breaks both solutions. Have to override the imported
+subroutine after loading.
+
+These methods works for all kinds of subroutines...
+
+
+Mocking objects
+---------------
+
+Assum I have some code that uses Queue::Timed and I only want to test my code.
+Enter Test::MockObject - xt/01-mock.t
+
+For another approach see Test::Mock
+
+
+ExtUtils::MakeMaker and Module::Build
+-------------------------------------
+
+Devel::Cover
+------------
+
+Smolder
+-------
+
+cpantesters.org
+---------------
+
+
